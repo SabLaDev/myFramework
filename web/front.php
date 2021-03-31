@@ -22,15 +22,12 @@ $context->fromRequest($request);
 $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 
 try {
-    extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
-    ob_start();
-    include sprintf(__DIR__ . '/../src/pages/%s.php', $_route);
-
-    $response = new Response(ob_get_clean());
+    $request->attributes->add($matcher->match($request->getPathInfo()));
+    $response = call_user_func($request->attributes->get('_controller'), $request);
 } catch (Routing\Exception\ResourceNotFoundException $exception) {
     $response = new Response('Not Found', 404);
 } catch (Exception $exception) {
-    $response = new Response('An error occured', 500);
+    $response = new Response('An error occurred', 500);
 }
 
 $response->send();
