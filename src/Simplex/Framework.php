@@ -9,7 +9,8 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 
-class Framework{
+class Framework
+{
     private $matcher;
     private $controllerResolver;
     private $argumentResolver;
@@ -20,7 +21,7 @@ class Framework{
         $this->controllerResolver = $controllerResolver;
         $this->argumentResolver = $argumentResolver;
     }
-    
+
     public function handle(Request $request)
     {
         $this->matcher->getContext()->fromRequest($request);
@@ -38,5 +39,4 @@ class Framework{
             return new Response('An error occurred', 500);
         }
     }
-
 }
