@@ -1,8 +1,11 @@
 <?php
 
 use Symfony\Component\Routing;
+use Symfony\Component\HttpFoundation\Response;
 
-function is_leap_year($year = null) {
+//Leap Year appplication
+function is_leap_year($year = null)
+{
     if (null === $year) {
         $year = date('Y');
     }
@@ -11,9 +14,8 @@ function is_leap_year($year = null) {
 }
 
 $routes = new Routing\RouteCollection();
-/* $routes->add('hello', new Routing\Route('/hello/{name}', ['name'=>'World']));
-$routes->add('bye', new Routing\Route('/bye'));
- */
+
+//Route Hello
 $routes->add('hello', new Routing\Route('/hello/{name}', [
     'name' => 'World',
     '_controller' => function ($request) {
@@ -26,6 +28,7 @@ $routes->add('hello', new Routing\Route('/hello/{name}', [
     }
 ]));
 
+//Route Goodbye
 $routes->add('bye', new Routing\Route('/bye', [
     'name' => 'World',
     '_controller' => function ($request) {
@@ -34,6 +37,18 @@ $routes->add('bye', new Routing\Route('/bye', [
         $response = render_template($request);
 
         return $response;
+    }
+]));
+
+//Route année bissextile
+$routes->add('leap_year', new Routing\Route('/is_leap_year/{year}', [
+    'year' => null,
+    '_controller' => function ($request) {
+        if (is_leap_year($request->attributes->get('year'))) {
+            return new Response('Yep, this is a leap year!');
+        }
+
+        return new Response('Nope, this is not a leap year.');
     }
 ]));
 
